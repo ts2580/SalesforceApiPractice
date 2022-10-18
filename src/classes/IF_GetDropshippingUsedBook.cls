@@ -4,31 +4,13 @@
 
 public with sharing class IF_GetDropshippingUsedBook {
 
-    private static final String BASE_URL = 'http://www.aladin.co.kr/ttb/api/ItemLookUp.aspx?';
-
-    private static String GetUrl(String ISBN13) {
-        Map<String, String> paramMap = new Map<String, String>();
-        paramMap.put('ttbkey', 'ttbtrstyq0151001');
-        paramMap.put('ItemId', EncodingUtil.urlEncode(ISBN13, 'UTF-8'));
-        paramMap.put('itemIdType', 'ISBN13');
-        paramMap.put('OptResult', 'usedList');
-        paramMap.put('output', 'JS');
-        paramMap.put('Version', '20131101');
-
-        String URL = BASE_URL;
-        Iterator<String> iter = paramMap.keySet().iterator();
-        while (iter.hasNext()) {
-            String key = iter.next();
-            String value = paramMap.get(key);
-
-            URL += key + '=' + value + '&';
-        }
-
-        return URL;
-    }
 
     @Future(Callout = true)
     public static void getBookListInfo(Integer StartNum, Integer ENDNum){
+
+        IF_Util IF_Util = new IF_Util();
+
+        String a = null;
 
         List<BookByVolume__c> ListBooks = [
                 SELECT ISBN13__c, Name, Book__c
@@ -39,13 +21,13 @@ public with sharing class IF_GetDropshippingUsedBook {
         List<BranchBook__c> ListBranchBook = new List<BranchBook__c>();
         List<Object> Books = new List<Object>();
 
-        for(BookByVolume__c BBV : ListBooks){
 
-            String searchWord = BBV.ISBN13__c;
+
+        for(BookByVolume__c BBV : ListBooks){
 
             Http http = new Http();
             HttpRequest request = new HttpRequest();
-            request.setEndpoint(GetUrl(searchWord));
+            request.setEndpoint(IF_Util.getDropshippingUsedBookURL(BBV.ISBN13__c));
             request.setMethod('GET');
             HttpResponse response = http.send(request);
 
@@ -70,8 +52,6 @@ public with sharing class IF_GetDropshippingUsedBook {
 
                 if(IsDropshipping != 0 && IsDropshipping != null){
 
-                    System.debug(result3);
-
                     BranchBook__c BranchBook = new BranchBook__c();
                     BranchBook.Name = BBV.Name;
                     BranchBook.BranchName__c = '알라딘 직배송';
@@ -90,7 +70,7 @@ public with sharing class IF_GetDropshippingUsedBook {
                 Integer spaceMinPrice = (Integer)result6.get('minPrice');
 
                 if(IsThereSpaceUsed != 0 && IsThereSpaceUsed != null){
-                    List<BranchBook__c> spaceBranchBook = IF_GetUsedBookInfo.getUsedBookInfo(BBV.Name, searchWord, String.valueOf(spaceMinPrice), BBV.Book__c);
+                    List<BranchBook__c> spaceBranchBook = IF_GetUsedBookInfo.getUsedBookInfo(BBV.Name, BBV.ISBN13__c, String.valueOf(spaceMinPrice), BBV.Book__c);
 
                     for(BranchBook__c SBB : spaceBranchBook){
                         ListBranchBook.add(SBB);
@@ -98,7 +78,6 @@ public with sharing class IF_GetDropshippingUsedBook {
                 }
             }
         }
-
         insert ListBranchBook;
     }
 

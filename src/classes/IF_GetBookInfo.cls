@@ -4,35 +4,10 @@
 
 public with sharing class IF_GetBookInfo {
 
-    private static final String BASE_URL = 'http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?';
-
-    private static String GetUrl(String searchWord) {
-        Map<String, String> paramMap = new Map<String, String>();
-        paramMap.put('ttbkey', 'ttbtrstyq0151001');
-        paramMap.put('Query', EncodingUtil.urlEncode(searchWord, 'UTF-8'));
-        paramMap.put('Sort', 'PublishTime');
-        paramMap.put('QueryType', 'Title');
-        paramMap.put('MaxResults', '50');
-        paramMap.put('start', '1');
-        paramMap.put('Cover', 'Big');
-        paramMap.put('SearchTarget', 'Book');
-        paramMap.put('output', 'JS');
-        paramMap.put('Version', '20131101');
-
-        String URL = BASE_URL;
-        Iterator<String> iter = paramMap.keySet().iterator();
-        while (iter.hasNext()) {
-            String key = iter.next();
-            String value = paramMap.get(key);
-
-            URL += key + '=' + value + '&';
-        }
-
-        return URL;
-    }
-
-
+    private static final String IFID = 'IF_EM_SFDC_StoreProductLIst_REQ';
     public static void getBookInfo(Integer StartNum, Integer ENDNum){
+
+        IF_Util IF_Util = new IF_Util();
 
         List<Book__c> ListBooks = [
                 SELECT Id, Name, Volume__c, Type__c, Cover__c, f_Order__c
@@ -44,12 +19,11 @@ public with sharing class IF_GetBookInfo {
 
         for(Book__c LB : ListBooks){
 
-            String searchWord = LB.Name;
             Integer TotalVolume;
 
             Http http = new Http();
             HttpRequest request = new HttpRequest();
-            request.setEndpoint(GetUrl(searchWord));
+            request.setEndpoint(IF_Util.getBookInfoURL(LB.Name));
             request.setMethod('GET');
             HttpResponse response = http.send(request);
 
@@ -107,6 +81,7 @@ public with sharing class IF_GetBookInfo {
                 }
             }
         }
+
         update ListBooks;
         insert ListBookByVolume;
     }

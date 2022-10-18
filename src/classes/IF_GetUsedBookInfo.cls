@@ -4,36 +4,16 @@
 
 public with sharing class IF_GetUsedBookInfo {
 
-    private static final String BASE_URL = 'http://www.aladin.co.kr/ttb/api/ItemOffStoreList.aspx?';
-
-    private static String GetUrl(String ISBN13) {
-        Map<String, String> paramMap = new Map<String, String>();
-        paramMap.put('ttbkey', 'ttbtrstyq0151001');
-        paramMap.put('ItemId', EncodingUtil.urlEncode(ISBN13, 'UTF-8'));
-        paramMap.put('itemIdType', 'ISBN13');
-        paramMap.put('output', 'JS');
-        paramMap.put('Version', '20131101');
-
-        String URL = BASE_URL;
-        Iterator<String> iter = paramMap.keySet().iterator();
-        while (iter.hasNext()) {
-            String key = iter.next();
-            String value = paramMap.get(key);
-
-            URL += key + '=' + value + '&';
-        }
-
-        return URL;
-    }
-
     public static List<BranchBook__c> getUsedBookInfo(String Name,String ISBN13, String MinPrice, Id BookId) {
+
+        IF_Util IF_Util = new IF_Util();
 
         List<BranchBook__c> ListBranchBook = new List<BranchBook__c>();
         List<Object> Books = new List<Object>();
 
         Http http = new Http();
         HttpRequest request = new HttpRequest();
-        request.setEndpoint(GetUrl(ISBN13));
+        request.setEndpoint(IF_Util.getUsedBookInfoURL(ISBN13));
         request.setMethod('GET');
         HttpResponse response = http.send(request);
 
