@@ -1,0 +1,11 @@
+<apex:page standardController="Book__c" extensions="TempController">
+    
+   <apex:repeat value="{!Books}" var="Bs">
+       <tr>
+           <td class="tdd3" style="font-weight:bold">
+               {!Bs.Name}<br/>
+           </td>
+       </tr>
+    </apex:repeat>
+
+</apex:page>
