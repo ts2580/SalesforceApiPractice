@@ -81,7 +81,10 @@ public with sharing class IF_GetBookInfo {
                         BookByVolume.ISBN13__c = (String) result1.get('isbn13');
                         price = (Integer) result1.get('priceSales');
                         BookByVolume.Price__c = String.valueOf(price);
-                        BookByVolume.Cover__c = (String) result1.get('cover');
+
+                        String NormalCover = (String) result1.get('cover');
+
+                        BookByVolume.Cover__c = NormalCover.replace('cover','cover500');
                         BookByVolume.Book__c = LB.Id;
 
                         if(LB.Cover__c == null){

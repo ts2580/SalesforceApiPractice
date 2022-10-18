@@ -27,10 +27,11 @@ public with sharing class IF_GetDropshippingUsedBook {
         return URL;
     }
 
+    @Future(Callout = true)
     public static void getBookListInfo(Integer StartNum, Integer ENDNum){
 
         List<BookByVolume__c> ListBooks = [
-                SELECT ISBN13__c, Name
+                SELECT ISBN13__c, Name, Book__c
                 FROM BookByVolume__c
                 WHERE IsPurchased__c = FALSE
                 AND f_order__c >=: StartNum
@@ -67,24 +68,29 @@ public with sharing class IF_GetDropshippingUsedBook {
                 Integer IsDropshipping = (Integer)result4.get('itemCount');
                 Integer minPrice = (Integer)result4.get('minPrice');
 
-                if(IsDropshipping != 0 && IsDropshipping != Null){
+                if(IsDropshipping != 0 && IsDropshipping != null){
+
+                    System.debug(result3);
+
                     BranchBook__c BranchBook = new BranchBook__c();
                     BranchBook.Name = BBV.Name;
                     BranchBook.BranchName__c = '알라딘 직배송';
+                    BranchBook.Book__c = BBV.Book__c;
+                    BranchBook.BookLink__c = (String) result4.get('link');
                     BranchBook.MinPrice__c = String.valueOf(minPrice);
                     ListBranchBook.add(BranchBook);
                 }
 
                 Map<String, Object> result5 = (Map<String, Object>) JSON.deserializeUntyped(JSON.serialize(usedList));
-                Object spaceUsed = (Object) result3.get('spaceUsed');
+                Object spaceUsed = (Object) result5.get('spaceUsed');
 
                 Map<String, Object> result6 = (Map<String, Object>) JSON.deserializeUntyped(JSON.serialize(spaceUsed));
 
                 Integer IsThereSpaceUsed = (Integer)result6.get('itemCount');
                 Integer spaceMinPrice = (Integer)result6.get('minPrice');
 
-                if(IsThereSpaceUsed != 0 && IsThereSpaceUsed != Null){
-                    List<BranchBook__c> spaceBranchBook = IF_GetUsedBookInfo.getUsedBookInfo(BBV.Name, searchWord, String.valueOf(spaceMinPrice));
+                if(IsThereSpaceUsed != 0 && IsThereSpaceUsed != null){
+                    List<BranchBook__c> spaceBranchBook = IF_GetUsedBookInfo.getUsedBookInfo(BBV.Name, searchWord, String.valueOf(spaceMinPrice), BBV.Book__c);
 
                     for(BranchBook__c SBB : spaceBranchBook){
                         ListBranchBook.add(SBB);

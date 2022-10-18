@@ -4,49 +4,23 @@
 
 public with sharing class AladinBatch_sc implements Schedulable, Database.AllowsCallouts{
 
-    // String CRON_EXP = '0 0 8 * * ? *';
-    // String CRON_EXP_TEST = '0 30 17 * * ? *';
-    // System.schedule('AladinBatch_sc Schdule [매일 8시]', CRON_EXP_TEST, new AladinBatch_sc());
+
+    // String CRON_EXP = '00 00 22 * * ? *';
+    // System.schedule('AladinBatch', CRON_EXP, new AladinBatch_sc());
     public void execute(SchedulableContext sc) {
 
-        String CRON_EXP_1 = '0 ';
-        String CRON_EXP_2 = ' 13 * * ? *';
-        String CRON_EXP;
+        List<BranchBook__c> BranchBook= [SELECT Id FROM BranchBook__c];
 
-        for(Integer i = 0; i < 5; i++){
-            CRON_EXP = CRON_EXP_1 + String.valueOf(i*2) +CRON_EXP_2;
+        delete BranchBook;
 
-            switch on i {
-                when 0 {
-                    System.schedule('AladinGetBookInfo_'+ String.valueOf(i+1) +'_sc Schdule',
-                            CRON_EXP, new AladinGetBookInfo_1_sc());
-                }
-                when 1 {
-                    System.schedule('AladinGetBookInfo_'+ String.valueOf(i+1) +'_sc Schdule',
-                            CRON_EXP, new AladinGetBookInfo_2_sc());
-                }
-                when 2 {
-                    System.schedule('AladinGetBookInfo_'+ String.valueOf(i+1) +'_sc Schdule',
-                            CRON_EXP, new AladinGetBookInfo_3_sc());
-                }
+        Integer startNum = 1;
+        Integer endNum = 50;
 
-                when 3 {
-                    System.schedule('AladinGetBookInfo_'+ String.valueOf(i+1) +'_sc Schdule',
-                            CRON_EXP, new AladinGetBookInfo_4_sc());
-                }
-
-                when 4 {
-                    System.schedule('AladinGetBookInfo_'+ String.valueOf(i+1) +'_sc Schdule',
-                            CRON_EXP, new AladinGetBookInfo_5_sc());
-
-                }
-                when else {
-
-                }
-            }
+        for(Integer i = 2; i < 30; i++){
+            IF_GetDropshippingUsedBook.getBookListInfo(startNum, endNum);
+            startNum = endNum;
+            endNum = 50*i;
         }
-
-
-
     }
+
 }
