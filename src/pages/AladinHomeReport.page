@@ -1,0 +1,8 @@
+<!--
+ - Created by 한성진 on 2022-10-18.
+ -->
+
+<apex:page standardController="Contact" sidebar="false" showHeader="false" id="AladinHomeReport">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <iframe src="/00O5h000006L9Z4EAK?isdtp=mn" style="border:none; width:1024px; height:480px"></iframe>
+</apex:page>
