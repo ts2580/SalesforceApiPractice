@@ -5,32 +5,25 @@
 public with sharing class AladinHomePageComponentController {
 
     @AuraEnabled
-    public static Map<String, List<String>> getBranchBook(){
+    public static Map<String, List<String>> getBranch(){
 
-        Map<String, List<String>> MapBook = new Map<String, List<String>>();
-        List<BranchBook__c> ListBranchBook = new List<BranchBook__c>();
+        Map<String, List<String>> MapBranch = new Map<String, List<String>>();
 
-
-        String BranchName;
-        List<AggregateResult> ListBranchName = [SELECT BranchName__c, SUM(f_MinPrice__c)
+        List<AggregateResult> AggregateBranchName = [SELECT BranchName__c, Branch__c, SUM(f_MinPrice__c) TotalPrice
                                                 FROM BranchBook__c
-                                                GROUP BY BranchName__c
+                                                GROUP BY BranchName__c, Branch__c
                                                 ORDER BY SUM(f_MinPrice__c) DESC];
 
-        for(AggregateResult LBN : ListBranchName){
+        for(AggregateResult ABN : AggregateBranchName){
 
-            List<String> BranchBooks = new List<String>();
-            BranchName = String.valueOf(LBN.get('BranchName__c'));
-            ListBranchBook = [SELECT Name FROM BranchBook__c WHERE BranchName__c =: BranchName];
+            List<String> BranchIdAndTotalPrice = new List<String>();
+            BranchIdAndTotalPrice.add(String.valueOf(ABN.get('TotalPrice')));
+            BranchIdAndTotalPrice.add(String.valueOf(ABN.get('Branch__c')));
 
-            for(BranchBook__c LBB : ListBranchBook){
-                BranchBooks.add(LBB.Name);
-            }
-
-            MapBook.put(BranchName, BranchBooks);
+            MapBranch.put(String.valueOf(ABN.get('BranchName__c')), BranchIdAndTotalPrice);
         }
 
-        return MapBook;
+        return MapBranch;
     }
 
     @AuraEnabled

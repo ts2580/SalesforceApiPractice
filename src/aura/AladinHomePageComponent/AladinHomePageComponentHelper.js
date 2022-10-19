@@ -1,6 +1,6 @@
 ({
 	getBranchBook : function(component, event, helper){
-        var action = component.get("c.getBranchBook");
+        var action = component.get("c.getBranch");
 
         /*action.setParams({
             "recordId" : component.get("v.recordId")
@@ -9,31 +9,73 @@
             var state = response.getState();
             if(state === "SUCCESS" && component.isValid()){
 
-                var ReturnMap = response.getReturnValue();
+                var BranchMap = response.getReturnValue();
 
-                for (var key in ReturnMap) {
+                var TotalBranchDiv = parseInt(Object.keys(BranchMap).length/10);
 
-                    console.log(key, ReturnMap[key]);
+                for(var i = 0; i < TotalBranchDiv+1; i++){
+                    var BranchDIV = document.createElement('div');
+                    BranchDIV.classList.add('Branch_' + i);
+                    BranchDIV.style.display = 'flex';
+                    BranchDIV.style.justifyContent = 'center';
+                    document.querySelector(".Branch").appendChild(BranchDIV);
+                }
 
-                    var BranchAndInventory = document.querySelector(".BookByBranch");
+                var i = 0;
+                var t = 0;
+                for (var key in BranchMap) {
+                    // <lightning:formattedUrl value="{!'/' + 'a0T5h000006HvMnEAK'}" tooltip="Branch__c" label="지점" target="_blank" />
 
-                    var BranchNameTR = document.createElement('tr');
-                    BranchAndInventory.appendChild(BranchNameTR);
+                    var URL = 'https://mindful-moose-d5c1p6-dev-ed.lightning.force.com/lightning/r/Branch__c/'
 
-                    var BranchNameTd = document.createElement('td');
-                    BranchNameTd.classList.add('BookByBranch-td');
-                    BranchNameTd.innerHTML  = key;
-                    BranchNameTR.appendChild(BranchNameTd);
+                    var BranchNameDIV = document.createElement('a');
+                    BranchNameDIV.classList.add('Branch-Detail');
+                    BranchNameDIV.innerHTML  = key + '<br>' + parseInt(BranchMap[key][0]).toLocaleString('ko-KR') + '원';
+                    BranchNameDIV.href = URL + BranchMap[key][1] + '/view';
+                    BranchNameDIV.target = "_blank";
+                    document.querySelector('.Branch_' + i).appendChild(BranchNameDIV);
 
-                    var BooksTd = document.createElement("td");
+                    t++;
+
+                    if(t%10 == 0){
+                        i++;
+                    }
+
+
+                    /*var BooksTd = document.createElement("td");
                     BooksTd.classList.add('BookByBranch-td');
                     BooksTd.innerHTML  = ReturnMap[key];
-                    BranchNameTR.appendChild(BooksTd);
+                    BranchNameTR.appendChild(BooksTd);*/
                 }
 
             }
         });
 
         $A.enqueueAction(action);
+    },
+
+    makeBranchBooksDiv : function(component, event, helper){
+
+        alert('Hello World');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 })

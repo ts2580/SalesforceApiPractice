@@ -4,7 +4,7 @@
 
 public with sharing class IF_GetUsedBookInfo {
 
-    public static List<BranchBook__c> getUsedBookInfo(String Name,String ISBN13, String MinPrice, Id BookId) {
+    public static List<BranchBook__c> getUsedBookInfo(Map<String, Id> BranchMap, Map<String, String> ParamMap) {
 
         IF_Util IF_Util = new IF_Util();
 
@@ -13,7 +13,7 @@ public with sharing class IF_GetUsedBookInfo {
 
         Http http = new Http();
         HttpRequest request = new HttpRequest();
-        request.setEndpoint(IF_Util.getUsedBookInfoURL(ISBN13));
+        request.setEndpoint(IF_Util.getUsedBookInfoURL(ParamMap.get('ISBN13')));
         request.setMethod('GET');
         HttpResponse response = http.send(request);
 
@@ -26,11 +26,14 @@ public with sharing class IF_GetUsedBookInfo {
 
                 Map<String, Object> BranchDetail = (Map<String, Object>) JSON.deserializeUntyped(JSON.serialize(objectBook));
                 BranchBook__c BranchBook = new BranchBook__c();
-                BranchBook.Name = Name;
-                BranchBook.BranchName__c = (String) BranchDetail.get('offName');
-                BranchBook.Book__c = BookId;
-                BranchBook.BookLink__c = (String) BranchDetail.get('link');
-                BranchBook.MinPrice__c = MinPrice;
+                BranchBook.Name = ParamMap.get('BookName');
+                BranchBook.Branch__c = BranchMap.get((String) BranchDetail.get('offName'));
+                BranchBook.Book__c = ParamMap.get('MasterBook');
+
+                String link = (String) BranchDetail.get('link');
+                BranchBook.BookLink__c = link.replace('amp;','');
+
+                BranchBook.MinPrice__c = ParamMap.get('MinPrice');
                 ListBranchBook.add(BranchBook);
             }
 

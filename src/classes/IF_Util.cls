@@ -80,4 +80,17 @@ public with sharing class IF_Util {
         return URL;
     }
 
+    public Map<String, Id> getBranch() {
+
+        Map<String, Id> MapBranchNameId = new Map<String, Id>();
+
+        List<Branch__c> ListBranch = [SELECT Id, Name FROM Branch__c];
+
+        for(Branch__c B : ListBranch){
+            MapBranchNameId.put(B.Name, B.Id);
+        }
+
+        return MapBranchNameId;
+    }
+
 }
