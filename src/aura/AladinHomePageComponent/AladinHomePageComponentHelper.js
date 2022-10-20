@@ -5,6 +5,7 @@
         /*action.setParams({
             "recordId" : component.get("v.recordId")
         })*/
+
         action.setCallback(this, function(response){
             var state = response.getState();
             if(state === "SUCCESS" && component.isValid()){
@@ -41,11 +42,6 @@
                         i++;
                     }
 
-
-                    /*var BooksTd = document.createElement("td");
-                    BooksTd.classList.add('BookByBranch-td');
-                    BooksTd.innerHTML  = ReturnMap[key];
-                    BranchNameTR.appendChild(BooksTd);*/
                 }
 
             }
@@ -57,25 +53,6 @@
     makeBranchBooksDiv : function(component, event, helper){
 
         alert('Hello World');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     }
 })

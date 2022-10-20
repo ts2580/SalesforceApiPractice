@@ -2,11 +2,13 @@
  * Created by SUNGJIN on 2022-10-01.
  */
 
-public with sharing class AladinBatch_sc implements Schedulable, Database.AllowsCallouts{
+public with sharing class AladinBatch_1_sc implements Schedulable, Database.AllowsCallouts{
 
 
-    // String CRON_EXP = '00 00 22 * * ? *';
-    // System.schedule('AladinBatch', CRON_EXP, new AladinBatch_sc());
+    /*
+    String CRON_EXP = '00 00 22 * * ? *';
+    System.schedule('1. Insert Book by branch.', CRON_EXP, new AladinBatch_1_sc());
+    */
     public void execute(SchedulableContext sc) {
 
         List<BranchBook__c> BranchBook= [SELECT Id FROM BranchBook__c];
@@ -21,6 +23,7 @@ public with sharing class AladinBatch_sc implements Schedulable, Database.Allows
             startNum = endNum;
             endNum = 50*i;
         }
+
     }
 
 }

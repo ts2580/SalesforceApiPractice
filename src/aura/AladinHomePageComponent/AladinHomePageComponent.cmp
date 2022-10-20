@@ -8,7 +8,7 @@
     <aura:attribute name="BranchBook" type="BranchBook__c"/>
     <aura:attribute name="MapBooksByBranch" type="Map[]"/>
     <aura:attribute name="ObjectBook" type="Object"/>
-    <!-- a0T5h000006HvMnEAK Branch__c -->
+
     <body>
         <div class="Branch">
 

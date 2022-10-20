@@ -27,7 +27,7 @@ public with sharing class AladinHomePageComponentController {
     }
 
     @AuraEnabled
-    public static Map<String, List<String>> fetchMapData(){
+    public static Map<String, List<String>> TestMapData(){
         Map<String, List<String>> mapCustomer = new Map <String, List<String>>();
         mapCustomer.put('Sample', new List<String> {'aaaaa','aaaaa'});
         mapCustomer.put('Sample2', new List<String> {'bbbbb','bbbbb'});
