@@ -4,18 +4,16 @@
 
 public with sharing class IF_GetBookInfo {
 
-    private static final String IFID = 'IF_EM_SFDC_StoreProductLIst_REQ';
     public static void getBookInfo(Integer StartNum, Integer ENDNum){
 
         IF_Util IF_Util = new IF_Util();
-
+        Map<String, Object> BookMap = new Map<String, Object>();
         List<Book__c> ListBooks = [
                 SELECT Id, Name, Volume__c, Type__c, Cover__c, f_Order__c
                 FROM Book__c
                 WHERE f_Order__c >=: StartNum
                 AND f_Order__c <: ENDNum];
         List<BookByVolume__c> ListBookByVolume = new List<BookByVolume__c>();
-        Integer i = 1;
 
         for(Book__c LB : ListBooks){
 
@@ -36,27 +34,25 @@ public with sharing class IF_GetBookInfo {
                 Map<String, Object> responseBooks = (Map<String, Object>) JSON.deserializeUntyped(response.getBody());
                 Books = (List<Object>) responseBooks.get('item');
 
-                System.debug(Books);
-
                 if(Books.isEmpty()){
                     LB.HasNoResult__c = true;
                 }else{
                     TotalVolume = Books.size();
                     for(Object objectBook : Books){
 
-                        Map<String, Object> result1 = (Map<String, Object>) JSON.deserializeUntyped(JSON.serialize(objectBook));
+                        BookMap = (Map<String, Object>) objectBook;
 
                         BookByVolume__c BookByVolume = new BookByVolume__c();
-                        String BookName = (String)result1.get('title');
+                        String BookName = (String)BookMap.get('title');
                         if(BookName.length() > 70){
                             BookName = BookName.substring(0, 50);
                         }
                         BookByVolume.Name = BookName;
-                        BookByVolume.ISBN13__c = (String) result1.get('isbn13');
-                        price = (Integer) result1.get('priceSales');
+                        BookByVolume.ISBN13__c = (String) BookMap.get('isbn13');
+                        price = (Integer) BookMap.get('priceSales');
                         BookByVolume.Price__c = String.valueOf(price);
 
-                        String NormalCover = (String) result1.get('cover');
+                        String NormalCover = (String) BookMap.get('cover');
 
                         BookByVolume.Cover__c = NormalCover.replace('cover','cover500');
                         BookByVolume.Book__c = LB.Id;

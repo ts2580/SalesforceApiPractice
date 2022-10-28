@@ -24,7 +24,7 @@ public with sharing class IF_GetUsedBookInfo {
 
             for(Object objectBook : Books){
 
-                Map<String, Object> BranchDetail = (Map<String, Object>) JSON.deserializeUntyped(JSON.serialize(objectBook));
+                Map<String, Object> BranchDetail = (Map<String, Object>) objectBook;
                 BranchBook__c BranchBook = new BranchBook__c();
                 BranchBook.Name = ParamMap.get('BookName');
                 BranchBook.Branch__c = BranchMap.get((String) BranchDetail.get('offName'));
@@ -36,7 +36,6 @@ public with sharing class IF_GetUsedBookInfo {
                 BranchBook.MinPrice__c = ParamMap.get('MinPrice');
                 ListBranchBook.add(BranchBook);
             }
-
 
         }
 

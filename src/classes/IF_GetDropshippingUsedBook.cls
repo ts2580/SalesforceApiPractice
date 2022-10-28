@@ -4,7 +4,6 @@
 
 public with sharing class IF_GetDropshippingUsedBook {
 
-
     @Future(Callout = true)
     public static void getBookListInfo(Integer StartNum, Integer ENDNum){
 
@@ -20,6 +19,8 @@ public with sharing class IF_GetDropshippingUsedBook {
         List<Object> Books = new List<Object>();
 
         Map<String, Id> BranchMap = IF_Util.getBranch();
+        Map<String, Object> aladinUsed = new Map<String, Object>();
+        Map<String, Object> spaceUsed = new Map<String, Object>();
         Map<String, String> ParamMap = new Map<String, String>();
 
         for(BookByVolume__c BBV : ListBooks){
@@ -35,19 +36,15 @@ public with sharing class IF_GetDropshippingUsedBook {
                 Map<String, Object> responseBooks = (Map<String, Object>) JSON.deserializeUntyped(response.getBody());
                 Books = (List<Object>) responseBooks.get('item');
 
-                Map<String, Object> result1 = (Map<String, Object>) JSON.deserializeUntyped(JSON.serialize(Books[0]));
-                Object subInfo = (Object) result1.get('subInfo');
+                aladinUsed = (Map<String, Object>) Books[0];
+                aladinUsed = (Map<String, Object>) aladinUsed.get('subInfo');
+                aladinUsed = (Map<String, Object>) aladinUsed.get('usedList');
+                spaceUsed = aladinUsed;
 
-                Map<String, Object> result2 = (Map<String, Object>) JSON.deserializeUntyped(JSON.serialize(subInfo));
-                Object usedList = (Object) result2.get('usedList');
+                aladinUsed = (Map<String, Object>) aladinUsed.get('aladinUsed');
 
-                Map<String, Object> result3 = (Map<String, Object>) JSON.deserializeUntyped(JSON.serialize(usedList));
-                Object aladinUsed = (Object) result3.get('aladinUsed');
-
-                Map<String, Object> result4 = (Map<String, Object>) JSON.deserializeUntyped(JSON.serialize(aladinUsed));
-
-                Integer IsDropShipping = (Integer)result4.get('itemCount');
-                Integer minPrice = (Integer)result4.get('minPrice');
+                Integer IsDropShipping = (Integer)aladinUsed.get('itemCount');
+                Integer minPrice = (Integer)aladinUsed.get('minPrice');
 
                 if(IsDropShipping != 0 && IsDropShipping != null){
 
@@ -56,20 +53,17 @@ public with sharing class IF_GetDropshippingUsedBook {
                     BranchBook.Branch__c = BranchMap.get('알라딘 직배송');
                     BranchBook.Book__c = BBV.Book__c;
 
-                    String link = (String) result4.get('link');
+                    String link = (String) aladinUsed.get('link');
                     BranchBook.BookLink__c = link.replace('amp;','');
 
                     BranchBook.MinPrice__c = String.valueOf(minPrice);
                     ListBranchBook.add(BranchBook);
                 }
 
-                Map<String, Object> result5 = (Map<String, Object>) JSON.deserializeUntyped(JSON.serialize(usedList));
-                Object spaceUsed = (Object) result5.get('spaceUsed');
+                spaceUsed = (Map<String, Object>) spaceUsed.get('spaceUsed');
 
-                Map<String, Object> result6 = (Map<String, Object>) JSON.deserializeUntyped(JSON.serialize(spaceUsed));
-
-                Integer IsThereSpaceUsed = (Integer)result6.get('itemCount');
-                Integer spaceMinPrice = (Integer)result6.get('minPrice');
+                Integer IsThereSpaceUsed = (Integer)spaceUsed.get('itemCount');
+                Integer spaceMinPrice = (Integer)spaceUsed.get('minPrice');
 
                 if(IsThereSpaceUsed != 0 && IsThereSpaceUsed != null){
                     ParamMap.put('BookName', BBV.Name);
@@ -82,8 +76,11 @@ public with sharing class IF_GetDropshippingUsedBook {
                         ListBranchBook.add(SBB);
                     }
                 }
+
+
             }
         }
+
         insert ListBranchBook;
     }
 
