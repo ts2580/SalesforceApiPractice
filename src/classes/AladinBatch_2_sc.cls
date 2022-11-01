@@ -38,7 +38,6 @@ public with sharing class AladinBatch_2_sc implements Schedulable, Database.Allo
 
         update ListBranch;
 
-
     }
 
 }

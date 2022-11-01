@@ -26,14 +26,4 @@ public with sharing class AladinHomePageComponentController {
         return MapBranch;
     }
 
-    @AuraEnabled
-    public static Map<String, List<String>> TestMapData(){
-        Map<String, List<String>> mapCustomer = new Map <String, List<String>>();
-        mapCustomer.put('Sample', new List<String> {'aaaaa','aaaaa'});
-        mapCustomer.put('Sample2', new List<String> {'bbbbb','bbbbb'});
-        mapCustomer.put('Sample3', new List<String> {'ccccc','ccccc'});
-        mapCustomer.put('Sample4', new List<String> {'ddddd','dddd'});
-        return mapCustomer;
-    }
-
 }

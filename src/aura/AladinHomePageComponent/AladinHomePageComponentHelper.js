@@ -25,10 +25,7 @@
                 var i = 0;
                 var t = 0;
                 for (var key in BranchMap) {
-                    // <lightning:formattedUrl value="{!'/' + 'a0T5h000006HvMnEAK'}" tooltip="Branch__c" label="지점" target="_blank" />
-
                     var URL = 'https://mindful-moose-d5c1p6-dev-ed.lightning.force.com/lightning/r/Branch__c/'
-
                     var BranchNameDIV = document.createElement('a');
                     BranchNameDIV.classList.add('Branch-Detail');
                     BranchNameDIV.innerHTML  = key + '<br>' + parseInt(BranchMap[key][0]).toLocaleString('ko-KR') + '원';
