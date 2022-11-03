@@ -7,7 +7,7 @@ public with sharing class AladinBatch_1_sc implements Schedulable, Database.Allo
 
     /*
     String CRON_EXP = '00 00 22 * * ? *';
-    System.schedule('1. Insert Book by branch.', CRON_EXP, new AladinBatch_1_sc());
+    System.schedule('AladinBatch', CRON_EXP, new AladinBatch_1_sc());
     */
     public void execute(SchedulableContext sc) {
 
