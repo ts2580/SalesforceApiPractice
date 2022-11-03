@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/알라딘 API 연습용.iml" filepath="$PROJECT_DIR$/알라딘 API 연습용.iml" />
+      <module fileurl="file://$PROJECT_DIR$/API 개발 연습용.iml" filepath="$PROJECT_DIR$/API 개발 연습용.iml" />
     </modules>
   </component>
 </project>
