@@ -6,32 +6,49 @@
     <aura:handler name="init" value="{!this}" action="{!c.fnInit}" />
     <!--<aura:attribute name="recordId" type="String"/>-->
     <aura:attribute name="DaekyoProduct" type="DaekyoProduct__c"/>
+    <aura:attribute name="OptionNumber" type="Integer"/>
+    <aura:attribute name="OptionText" type="String"/>
+
+
     <body>
-        <div>
-            <div class="slds-m-around_xxx-small">
-                <div class="slds-page-header slds-page-header_related-list title">상품특성요소 등록</div>
-                <lightning:button class="OptionPlusButton">옵션 +</lightning:button>
-                <div class="Options">
-                    <div class="slds-form-element__row">
-                        <div class="slds-form-element">
-                            <label class="slds-form-element__label">
-                                옵션 1
-                            </label>
-                            <div class="slds-form-element__control">
-                                <input type="text" placeholder="옵션 1을 입력해주세요" class="slds-input" />
-                            </div>
-                            <label class="slds-form-element__label">
-                                상세 옵션 1
-                            </label>
-                            <div class="slds-form-element__control">
-                                <input type="text" placeholder="상세 옵션 1을 입력해주세요" class="slds-input" />
+        <div class="slds-m-around_xxx-small">
+            <div class="slds-page-header slds-page-header_related-list title slds-m-around_xx-small">상품특성요소 등록</div>
+            <lightning:button class="slds-m-around_xxx-small" onclick="{!c.addOption}">옵션 +</lightning:button>
+            <div class="Options">
+
+                <div class="slds-form-element__row">
+
+                    <div class="slds-form-element slds-m-around_xxx-small">
+                        <label class="slds-form-element__label" style="font-weight:Bold">
+                            옵션 1
+                        </label>
+                        <div class="slds-form-element__control">
+                            <input onchange="{!c.saveOption}"
+                                   type="text"
+                                   placeholder="옵션 1을 입력해주세요"
+                                   class="slds-input" />
+                        </div>
+                        <label class="slds-form-element__label">
+                            상세옵션 1
+                        </label>
+                        <div class="slds-form-element__control">
+                            <div class="addOptionDetail_1" style="display:flex">
+                                <input onchange="{!c.saveOption}"
+                                       type="text"
+                                       placeholder="상세옵션 1을 입력해주세요"
+                                       class="slds-input" />
+                                <img src="{!$Resource.addIcon}"
+                                     onclick="{!c.addOptionDetail}"
+                                     style="height:30px; margin-left:3px;cursor:pointer"
+                                     class="addOptionDetailButton_1-1"
+                                />
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
-
     </body>
 	
 </aura:component>
