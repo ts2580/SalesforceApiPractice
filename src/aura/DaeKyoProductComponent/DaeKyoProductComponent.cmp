@@ -1,5 +1,5 @@
 <aura:component controller="DaekyoProductController"
-                description="DaekyoProductController"
+                description="Daekyo Product Component"
                 implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome"
                 access="global">
 

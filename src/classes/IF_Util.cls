@@ -93,4 +93,16 @@ public with sharing class IF_Util {
         return MapBranchNameId;
     }
 
+    public List<String> getAllFields(String strObjectName){
+        SObjectType objType = Schema.getGlobalDescribe().get(strObjectName);
+        Map<String,Schema.SObjectField> mapFields = objType.getDescribe().fields.getMap();
+        List<String> listFields = new List<String>();
+
+        for(String key : mapFields.keySet()){
+            listFields.add(String.valueOf(mapFields.get(key)));
+        }
+
+        return listFields;
+    }
+
 }
