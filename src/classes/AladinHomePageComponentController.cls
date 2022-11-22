@@ -12,7 +12,7 @@ public with sharing class AladinHomePageComponentController {
         List<AggregateResult> AggregateBranchName = [SELECT BranchName__c, Branch__c, SUM(f_MinPrice__c) TotalPrice
                                                 FROM BranchBook__c
                                                 GROUP BY BranchName__c, Branch__c
-                                                ORDER BY SUM(f_MinPrice__c) DESC];
+                                                ORDER BY BranchName__c DESC];
 
         for(AggregateResult ABN : AggregateBranchName){
 

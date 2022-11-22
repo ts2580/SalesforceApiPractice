@@ -5,7 +5,10 @@
 public with sharing class DaekyoOptionController {
 
     @AuraEnabled
-    public static Option__c GetOption(String recordId){
+    public static Map<String, List<DetailedOption__c>> GetOption(String recordId){
+
+        Map<String, List<DetailedOption__c>> MapObject = new Map<String, List<DetailedOption__c>>();
+
 
         IF_Util IF_Util = new IF_Util();
 
@@ -14,31 +17,20 @@ public with sharing class DaekyoOptionController {
         String query = '';
         query += ' SELECT '+ String.join(listOptionFields, ', ');
         query += ' FROM Option__c ';
-        query += ' WHERE Id =: recordId ';
+        query += ' WHERE DaekyoProduct__c =: recordId Order By Name';
 
         List<Option__c> listOption = Database.query(query);
+        List<DetailedOption__c> listDetailedOption = new List<DetailedOption__c>();
 
-        Option__c ObjectOption = null;
-
-        if(!listOption.isEmpty()){
-            ObjectOption = listOption.get(0);
+        for(Option__c Option : listOption){
+            listDetailedOption = [SELECT Id, Name, Option__c
+                                  FROM DetailedOption__c
+                                  WHERE Option__c =: Option.Id
+                                  ORDER BY Name];
+            MapObject.put(Option.Name, listDetailedOption);
         }
 
-        Map<String, List<String>> MapOptions = new Map<String, List<String>>();
-        List<String> BranchIdAndTotalPrice = new List<String>();
-
-        for(AggregateResult ABN : AggregateBranchName){
-
-
-            BranchIdAndTotalPrice.add(String.valueOf(ABN.get('TotalPrice')));
-            BranchIdAndTotalPrice.add(String.valueOf(ABN.get('Branch__c')));
-
-            MapOptions.put(String.valueOf(ABN.get('BranchName__c')), BranchIdAndTotalPrice);
-        }
-
-
-
-        return ObjectOption;
+        return MapObject;
 
     }
 

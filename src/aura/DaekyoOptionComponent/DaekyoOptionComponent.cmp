@@ -9,10 +9,11 @@
 
     <aura:handler name="init" value="{!this}" action="{!c.fnInit}" />
     <aura:attribute name="recordId" type="String"/>
-    <aura:attribute name="option" type="Option__c"/>
+    <aura:attribute name="options" type="Option__c[]"/>
+    <aura:attribute name="MapOptions" type="Map" default="{}" />
 
     <body>
-
+        {!v.body}
     </body>
 
 
