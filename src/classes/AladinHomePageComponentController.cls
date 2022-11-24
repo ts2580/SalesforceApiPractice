@@ -26,4 +26,14 @@ public with sharing class AladinHomePageComponentController {
         return MapBranch;
     }
 
+    @AuraEnabled(Cacheable=true)
+    public static List<bookByVolumeExt__x> getBook(Id recordId){
+
+        List<bookByVolumeExt__x> listBookByVolume = [SELECT name__c, ispurched__c, Id, cover__c, price__c, volume__c
+        FROM bookByVolumeExt__x
+        WHERE book__c =: recordId];
+
+        return listBookByVolume;
+    }
+
 }
