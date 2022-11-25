@@ -29,9 +29,9 @@ public with sharing class AladinHomePageComponentController {
     @AuraEnabled(Cacheable=true)
     public static List<bookByVolumeExt__x> getBook(Id recordId){
 
-        List<bookByVolumeExt__x> listBookByVolume = [SELECT name__c, ispurched__c, Id, cover__c, price__c, volume__c
+        List<bookByVolumeExt__x> listBookByVolume = [SELECT Name__c, IsPurchased__c, Id, Cover__c, Price__c, volume__c
         FROM bookByVolumeExt__x
-        WHERE book__c =: recordId];
+        WHERE Book__c =: recordId];
 
         return listBookByVolume;
     }
