@@ -4,7 +4,7 @@
     <option name="allowRunningInParallel" value="false" />
     <option name="apexLogLevel" value="DEBUG" />
     <option name="calloutsLogLevel" value="INFO" />
-    <option name="connectionName" value="대교 개발 연습용" />
+    <option name="connectionName" value="SubPlayground" />
     <option name="connectionType" value="MDAPI" />
     <option name="contextConfiguration" value="false" />
     <option name="databaseLogLevel" value="INFO" />

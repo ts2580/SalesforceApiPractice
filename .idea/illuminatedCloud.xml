@@ -4,10 +4,10 @@
     <option name="connections">
       <list>
         <IlluminatedCloudConnection>
-          <option name="connectionName" value="대교 개발 연습용" />
+          <option name="connectionName" value="SubPlayground" />
           <option name="connectionType" value="MDAPI" />
           <option name="defaultModuleName" value="API 개발 연습용" />
-          <option name="offlineSymbolTablePath" value="$PROJECT_DIR$/IlluminatedCloud/__/OfflineSymbolTable.zip" />
+          <option name="offlineSymbolTablePath" value="$PROJECT_DIR$/IlluminatedCloud/SubPlayground/OfflineSymbolTable.zip" />
         </IlluminatedCloudConnection>
       </list>
     </option>

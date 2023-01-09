@@ -5,11 +5,6 @@
     <confirmationTokenRequired>false</confirmationTokenRequired>
     <label>fieldsetVisual</label>
     <packageVersions>
-        <majorNumber>238</majorNumber>
-        <minorNumber>3</minorNumber>
-        <namespace>et4ae5</namespace>
-    </packageVersions>
-    <packageVersions>
         <majorNumber>1</majorNumber>
         <minorNumber>7</minorNumber>
         <namespace>sf_com_apps</namespace>
